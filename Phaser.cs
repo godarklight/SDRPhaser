@@ -3,16 +3,18 @@ using System.Numerics;
 
 class Phaser
 {
-    AudioClient ac;
+    AudioDriver ad;
     Complex antenna1Phase;
     Complex antenna2Phase;
     Action<Complex[]> callback;
     Complex[] processedData = new Complex[Constants.CHUNK_SIZE];
+    Complex phase_offset = Complex.One;
 
-    public Phaser(AudioClient ac, Complex antenna1Phase, Complex antenna2Phase)
+    public Phaser(Settings s, AudioDriver ad, Complex antenna1Phase, Complex antenna2Phase)
     {
-        this.ac = ac;
-        ac.Register(ProcessSamples);
+        phase_offset = Complex.FromPolarCoordinates(1, Single.DegreesToRadians(-s.phase_offset));
+        this.ad = ad;
+        ad.Register(ProcessSamples);
         this.antenna1Phase = antenna1Phase;
         this.antenna2Phase = antenna2Phase;
     }
@@ -26,7 +28,7 @@ class Phaser
     {
         for (int i = 0; i < Constants.CHUNK_SIZE; i++)
         {
-            processedData[i] = (data1[i] * antenna1Phase) + (data2[i] * antenna2Phase);
+            processedData[i] = (data1[i] * antenna1Phase) + (data2[i] * phase_offset * antenna2Phase);
         }
         callback(processedData);
     }

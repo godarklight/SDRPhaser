@@ -25,6 +25,7 @@ class MiriServer
     private void AcceptConnection(IAsyncResult ar)
     {
         TcpClient newClient = listener.EndAcceptTcpClient(ar);
+        Console.WriteLine("Connection from: " + newClient.Client.RemoteEndPoint);
         clients.Add(newClient);
         listener.BeginAcceptTcpClient(AcceptConnection, null);
     }
@@ -73,6 +74,7 @@ class MiriServer
         }
         if (removeClient != null)
         {
+            Console.WriteLine("Disconnected from: " + removeClient.Client.RemoteEndPoint);
             clients.Remove(removeClient);
         }
     }
