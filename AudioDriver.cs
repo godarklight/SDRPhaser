@@ -20,10 +20,12 @@ class AudioDriver
     double tuning = Math.Tau * 11500.0 / 48000.0;
     bool running = true;
     Settings settings;
+    Complex antennaBAdjust;
 
     public AudioDriver(Settings settings)
     {
         this.settings = settings;
+        antennaBAdjust = Complex.FromPolarCoordinates(settings.voltage_offset, double.RadiansToDegrees(settings.phase_offset));
     }
 
     public void Register(Action<Complex[], Complex[]> callback)
@@ -77,7 +79,7 @@ class AudioDriver
             for (int i = 0; i < frameCount; i++)
             {
                 antennaANext[writePos] = new Complex(*floatIn++ * settings.channelA, *floatIn++ * settings.channelB);
-                antennaBNext[writePos] = new Complex(*floatIn++ * settings.channelC, *floatIn++ * settings.channelD);
+                antennaBNext[writePos] = new Complex(*floatIn++ * settings.channelC, *floatIn++ * settings.channelD) * antennaBAdjust;
                 writePos++;
                 if (writePos == Constants.CHUNK_SIZE)
                 {
