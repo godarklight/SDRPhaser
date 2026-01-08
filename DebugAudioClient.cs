@@ -1,6 +1,6 @@
 using System.Numerics;
 
-class DebugAudioClient
+class DebugAudioDriver : IAudioDriver
 {
     event Action<Complex[], Complex[]>? callbacks;
     Complex[] buffer1 = new Complex[Constants.CHUNK_SIZE];
@@ -9,7 +9,7 @@ class DebugAudioClient
 
     //Debug
     double phase = 0;
-    double tuning = Math.Tau * 11500.0 / 48000.0;
+    double tuning = Math.Tau * 13255.0 / 96000.0;
 
     public void Register(Action<Complex[], Complex[]> callback)
     {
@@ -20,7 +20,7 @@ class DebugAudioClient
     {
         while (true)
         {
-            Thread.Sleep(21);
+            Thread.Sleep(10);
             for (int i = 0; i < 1024; i++)
             {
                 double noise1 =  0.0001 * (random.NextDouble() - 0.5) * 2;
@@ -36,5 +36,10 @@ class DebugAudioClient
             }
             callbacks(buffer1, buffer2);
         }
+    }
+
+    public void Stop()
+    {
+
     }
 }

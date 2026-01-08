@@ -6,13 +6,13 @@ using System.Runtime.InteropServices;
 
 class MiriServer
 {
-    Phaser phaser;
+    IPhaser phaser;
     TcpListener listener;
     List<TcpClient> clients = new List<TcpClient>();
     byte[] sendData = new byte[4 * Constants.CHUNK_SIZE];
     //Throwaway data
     byte[] readData = new byte[256];
-    public MiriServer(Phaser phaser, int port)
+    public MiriServer(IPhaser phaser, int port)
     {
         this.phaser = phaser;
         phaser.Register(Process);

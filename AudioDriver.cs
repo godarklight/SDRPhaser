@@ -2,7 +2,7 @@ using System.Numerics;
 using PortAudioSharp;
 using Stream = PortAudioSharp.Stream;
 
-class AudioDriver
+class AudioDriver : IAudioDriver
 {
     event Action<Complex[], Complex[]>? callbacks;
     Complex[] antennaA = new Complex[Constants.CHUNK_SIZE];
@@ -12,12 +12,10 @@ class AudioDriver
     AutoResetEvent are = new AutoResetEvent(false);
     Random random = new Random();
     int writePos = 0;
-    Thread processThread;
-    object lockObject = new object();
+    Thread? processThread;
+    readonly Lock lockObject = new Lock();
 
     //Debug
-    double phase = 0;
-    double tuning = Math.Tau * 11500.0 / 48000.0;
     bool running = true;
     Settings settings;
     Complex antennaBAdjust;
