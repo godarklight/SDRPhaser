@@ -74,10 +74,8 @@ class ArbPhaser : IPhaser
                     }
                     float gain = BitConverter.ToSingle(throwAway, 0);
                     float phase = BitConverter.ToSingle(throwAway, 4);
-                    Console.WriteLine("Update Gain/Phase " + gain + ":" + phase);
                     //Convert DB to value
                     gain = (float)Math.Pow(10.0, gain / 20.0);
-                    Console.WriteLine("Gain Value: " + gain);
                     phaseGain = Complex.FromPolarCoordinates(gain, float.DegreesToRadians(phase));
                 }
                 //OUT
@@ -92,7 +90,7 @@ class ArbPhaser : IPhaser
                         BitConverter.GetBytes(imaginary).CopyTo(writeBuffer, writePos + 2);
                     }
                     s.Write(writeBuffer, 0, writeBuffer.Length);
-                    skip = 10;
+                    skip = 5;
                 }
                 skip--;
             }
