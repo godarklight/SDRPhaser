@@ -23,16 +23,19 @@ class Program
         Phaser p1 = new Phaser(s, ad, Complex.One, Complex.Zero);
         //Ant 2
         Phaser p2 = new Phaser(s, ad, Complex.Zero, Complex.One);
-        //Ant 1 + Ant 2 90deg
-        Phaser p3 = new Phaser(s, ad, Complex.One, Complex.FromPolarCoordinates(1.0, float.DegreesToRadians(90.0f)));
-        //Ant 1 + Ant 2 270deg
-        Phaser p4 = new Phaser(s, ad, Complex.One, Complex.FromPolarCoordinates(1.0, float.DegreesToRadians(270.0f)));
+        //Ant 1 + Ant 2 100deg (North)
+        Phaser p3 = new Phaser(s, ad, Complex.One, Complex.FromPolarCoordinates(1, float.DegreesToRadians(100.0f)));
+        //Ant 1 + Ant 2 290deg (South)
+        Phaser p4 = new Phaser(s, ad, Complex.One, Complex.FromPolarCoordinates(1, float.DegreesToRadians(290.0f)));
         //Ant 1 + 2
         Phaser p5 = new Phaser(s, ad, Complex.One, Complex.One);
         //Ant 1 - 2
         Phaser p6 = new Phaser(s, ad, Complex.One, -Complex.One);
         ArbPhaser arb7 = new ArbPhaser(s, ad, 5797);
-        Phaser p8 = new Phaser(s, ad, Complex.One, Complex.FromPolarCoordinates(0.5, float.DegreesToRadians(46.0f)));
+        //Stove, -4.4db @ 57.5deg
+        Phaser p8 = new Phaser(s, ad, Complex.One, Complex.FromPolarCoordinates(0.6026, float.DegreesToRadians(57.5f)));
+        //Amplifier 0.44db @ 241.2deg
+        Phaser p9 = new Phaser(s, ad, Complex.One, Complex.FromPolarCoordinates(1.052, float.DegreesToRadians(241.20f)));
 
         FloatServer tcp1 = new FloatServer(p1, 5991);
         FloatServer tcp2 = new FloatServer(p2, 5992);
@@ -42,6 +45,7 @@ class Program
         FloatServer tcp6 = new FloatServer(p6, 5996);
         FloatServer tcp7 = new FloatServer(arb7, 5997);
         FloatServer tcp8 = new FloatServer(p8, 5998);
+        FloatServer tcp9 = new FloatServer(p9, 5999);
         
         Console.CancelKeyPress += (_, _) => { ad.Stop(); };
         ad.Start();
